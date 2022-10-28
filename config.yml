@@ -1,0 +1,15 @@
+private_key: CaY5iCkYtN7DqXdiYK1BvmGrQuaSA4Tl4bEk9my0jc0=
+
+
+default_admin:
+  name: default_admin
+  password: default_password
+
+app_name: MyTestApp
+
+database:
+  host: localhost
+  port: 5433
+  user: feraclin
+  password: 12wm16ln
+  database: sanic_test
