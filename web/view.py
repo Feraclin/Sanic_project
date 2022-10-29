@@ -1,13 +1,33 @@
-from sanic import text
+from pprint import pprint
+from sanic import text, response
 from sanic.views import HTTPMethodView
+from store.user.accessors import user_list, goods_list, account_list
+from web.schemas import UserList, GoodList, AccountList
 
 
-class SimpleAsyncView(HTTPMethodView):
-    async def get(self, request):
-        return text("I am async get method")
+class AdminUserListView(HTTPMethodView):
 
-    async def post(self, request):
-        return text("I am async post method")
+    @staticmethod
+    async def get(request):
 
-    async def put(self, request):
-        return text("I am async put method")
+        users_list = await user_list(request.app)
+        pprint(UserList(userlist=users_list).json())
+        return response.json(UserList(userlist=users_list).json())
+
+
+class GoodsListView(HTTPMethodView):
+
+    @staticmethod
+    async def get(request):
+        goods_lst = await goods_list(request.app)
+
+        return response.json(GoodList(goodlist=goods_lst).json())
+
+
+class UserAccountView(HTTPMethodView):
+
+    @staticmethod
+    async def get(request):
+        account_lst = await account_list(request.app)
+        pprint(account_lst)
+        return response.json(AccountList(accountlist=account_lst).json())

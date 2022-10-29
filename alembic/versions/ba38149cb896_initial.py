@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 339a1ef601e6
+Revision ID: ba38149cb896
 Revises: 
-Create Date: 2022-10-28 23:08:07.737353
+Create Date: 2022-10-29 20:31:14.687739
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '339a1ef601e6'
+revision = 'ba38149cb896'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,20 +23,23 @@ def upgrade() -> None:
     sa.Column('title', sa.VARCHAR(length=255), nullable=False),
     sa.Column('description', sa.VARCHAR(length=255), nullable=False),
     sa.Column('cost', sa.Integer(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('title')
     )
-    op.create_table('user',
+    op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.VARCHAR(length=255), nullable=False),
     sa.Column('password', sa.VARCHAR(length=255), nullable=False),
     sa.Column('is_admin', sa.Boolean(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('active', sa.Boolean(), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('account',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('balance', sa.Integer(), nullable=False),
     sa.Column('owner', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['owner'], ['user.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['owner'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('transaction',

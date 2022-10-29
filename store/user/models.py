@@ -1,3 +1,4 @@
+from asyncpg import transaction
 from sqlalchemy import Integer, Column, VARCHAR, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -6,12 +7,13 @@ from web.schemas import User, Good, Account, Transaction
 
 
 class UserModel(db):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    username = Column(VARCHAR(255), nullable=False)
+    username = Column(VARCHAR(255), nullable=False, unique=True)
     password = Column(VARCHAR(255), nullable=False)
     is_admin = Column(Boolean, default=False)
+    active = Column(Boolean, default=False)
 
     def to_dc(self) -> User:
         return User(username=self.username,
@@ -23,9 +25,10 @@ class GoodModel(db):
     __tablename__ = 'good'
 
     id = Column(Integer, primary_key=True)
-    title = Column(VARCHAR(255), nullable=False)
+    title = Column(VARCHAR(255), nullable=False, unique=True)
     description = Column(VARCHAR(255), nullable=False)
     cost = Column(Integer, nullable=False)
+
 
     def to_dc(self) -> Good:
         return Good(title=self.title,
@@ -38,13 +41,15 @@ class AccountModel(db):
 
     id = Column(Integer, primary_key=True)
     balance = Column(Integer, nullable=False)
-    owner = Column(Integer, ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
-    user = relationship(UserModel, backref='user')
+    owner = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    user = relationship(UserModel, backref='users', lazy='immediate')
+    # transaction = relationship(Transaction, back_populates='transaction')
 
     def to_dc(self) -> Account:
         return Account(id=self.id,
                        balance=self.balance,
-                       owner=self.owner)
+                       owner=self.user.to_dc()
+                       )
 
 
 class TransactionModel(db):
@@ -53,8 +58,8 @@ class TransactionModel(db):
     id = Column(Integer, primary_key=True)
     amount = Column(Integer, nullable=False)
     destination_account = Column(Integer, ForeignKey('account.id', ondelete='CASCADE'), nullable=False)
-    account = relationship(AccountModel, backref='account')
+    account = relationship(AccountModel, back_populates='account', lazy='immediate')
 
     def to_dc(self) -> Transaction:
         return Transaction(amount=self.amount,
-                           destination_account=self.destination_account)
+                           destination_account=self.account.to_dc())
