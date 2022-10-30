@@ -37,7 +37,32 @@
 					"name": "DelGood",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Good4\",\r\n    \"description\": \"Not free good\",\r\n    \"cost\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/v1.0/admin/crudgood",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"v1.0",
+								"admin",
+								"crudgood"
+							]
+						}
 					},
 					"response": []
 				},
@@ -45,7 +70,32 @@
 					"name": "CreateGood",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Good4\",\r\n    \"description\": \"Free good\",\r\n    \"cost\": 0\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/v1.0/admin/crudgood",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"v1.0",
+								"admin",
+								"crudgood"
+							]
+						}
 					},
 					"response": []
 				},
@@ -53,7 +103,32 @@
 					"name": "EditGood",
 					"request": {
 						"method": "PATCH",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Good4\",\r\n    \"description\": \"Not free good\",\r\n    \"cost\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/v1.0/admin/crudgood",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"v1.0",
+								"admin",
+								"crudgood"
+							]
+						}
 					},
 					"response": []
 				}
@@ -99,18 +174,38 @@
 					"name": "ActivateUser",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/v1.0/user/newuser/another_user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"v1.0",
+								"user",
+								"newuser",
+								"another_user"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Login",
 					"request": {
+						"auth": {
+							"type": "bearer"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"another_user\",\r\n    \"password\": \"12345\"\r\n}",
+							"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"default_password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -143,7 +238,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"another_user\",\r\n    \"password\": \"12345\"\r\n}",
+							"raw": "{\r\n    \"username\": \"default_admin\",\r\n    \"password\": \"default_password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,19 +269,55 @@
 		{
 			"name": "UserList",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYW5vdGhlcl91c2VyIn0.IzTw7IgAiqyq3fAULd_81YqXGhWOOkEWGUF-MOa62J8",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/v1.0/admin/userlist",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"v1.0",
+						"admin",
+						"userlist"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "buygood",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdF91c2VyIn0.7YY7OBMtZKEy_AQ9aMXM0haKWRyv9hedPBLQ9KpIPD8",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"good\": \"cheap good\"}",
+					"raw": "{\r\n    \"goodname\": \"good2\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -216,7 +347,23 @@
 			"name": "goodlist",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/v1.0/user/goodlist",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"v1.0",
+						"user",
+						"goodlist"
+					]
+				}
 			},
 			"response": []
 		},
@@ -227,7 +374,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"signature\": \"750e0e06d95aa6f1b5e260bf4b63be2f1c9c3726\",\r\n    \"transaction_id\": 1234567,\r\n    \"user_id\": 1,\r\n    \"bill_id\": 1,\r\n    \"amount\": 1000\r\n}",
+					"raw": "{\r\n    \"signature\": \"678dc247d4bbd6d0280c668f12e0c93ff40d9873\",\r\n    \"transaction_id\": 1234567,\r\n    \"user_id\": 1,\r\n    \"bill_id\": 2,\r\n    \"amount\": 1000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -256,6 +403,16 @@
 		{
 			"name": "Userandaccount",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZGVmYXVsdF9hZG1pbiJ9.GpxFXplVxCR9C0qGBxzfxhPHg5zedEQu6aQXNZDTCqM",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -284,7 +441,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"status\": false\r\n}\r\n\r\n",
+					"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"status\": true\r\n}\r\n\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -313,8 +470,34 @@
 		{
 			"name": "AccountList",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdF91c2VyIn0.7YY7OBMtZKEy_AQ9aMXM0haKWRyv9hedPBLQ9KpIPD8",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/v1.0/user/accountlist",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"v1.0",
+						"user",
+						"accountlist"
+					]
+				}
 			},
 			"response": []
 		}
