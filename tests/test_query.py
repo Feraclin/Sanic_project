@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 from store.user.models import AccountModel, TransactionModel, UserModel
+from web.schemas import UserWithAccount
 
 engine = create_async_engine(
     URL(
@@ -33,19 +34,27 @@ async def create_async_pull_query(query, session, engine):
         await session.commit()
     await engine.dispose()
     # [pprint(line.__dict__['account'].__dict__['user'].__dict__) for line in res.scalars().all()]
-    # pprint([line.to_dc() for line in res.scalars().all()])
-    [pprint(line.__dict__['account'].__dict__['user'].__dict__) for line in res.scalars().all()]
+    pprint([UserWithAccount(**line.__dict__) for line in res.scalars().all()])
+    # [pprint(line) for line in res.scalars().all()]
 
 if __name__ == "__main__":
 
     query = select(AccountModel, TransactionModel) \
         .join(TransactionModel, AccountModel.id == TransactionModel.destination_account)
+
     query1 = select(AccountModel, UserModel) \
         .join(UserModel, AccountModel.owner == UserModel.id)
+
     query2 = select(TransactionModel, AccountModel, UserModel)\
         .join(AccountModel, TransactionModel.destination_account == AccountModel.id)\
         .join(UserModel, AccountModel.owner == UserModel.id)
+
     query4 = select(AccountModel)
-    asyncio.run(create_async_pull_query(query=query4,
+
+    query5 = select(AccountModel).join(UserModel, AccountModel.owner == UserModel.id)\
+        .where(UserModel.username == "test_user")
+
+    query6 = select(UserModel).join(AccountModel, UserModel.id == AccountModel.owner).order_by(UserModel.username)
+    asyncio.run(create_async_pull_query(query=query6,
                                         session=session,
                                         engine=engine))

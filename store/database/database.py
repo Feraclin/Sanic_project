@@ -59,6 +59,7 @@ class Database:
             if type(modification_variable) is list:
                 session.add_all(modification_variable)
             else:
+
                 session.add(modification_variable)
             await session.commit()
 
@@ -68,6 +69,13 @@ class Database:
 
         async with self.session.begin() as session:
             res = await session.execute(query)
+            await session.commit()
+            return res
+
+    async def create_async_merge_query(self, query):
+
+        async with self.session.begin() as session:
+            res = await session.merge(query)
             await session.commit()
             return res
 
