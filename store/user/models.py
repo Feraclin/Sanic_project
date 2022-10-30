@@ -2,7 +2,7 @@ from sqlalchemy import Integer, Column, VARCHAR, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
 from store.database.sqlalchemy_base import db
-from web.schemas import User, Good, Account, Transaction
+from web.schemas import User, Good, Account, Transaction, AccountWithTransaction
 
 
 class UserModel(db):
@@ -16,7 +16,8 @@ class UserModel(db):
     accounts = relationship('AccountModel', backref='user_', lazy='immediate')
 
     def to_dc(self, account_flag: bool = False) -> User:
-        return User(username=self.username,
+        return User(id=self.id,
+                    username=self.username,
                     password=self.password,
                     is_admin=self.is_admin,
                     active=self.active,
@@ -43,13 +44,20 @@ class AccountModel(db):
     id = Column(Integer, primary_key=True)
     balance = Column(Integer, nullable=False)
     owner = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
-    transaction = relationship('TransactionModel', backref='transaction', lazy=True)
+    transaction = relationship('TransactionModel', backref='transaction', lazy='immediate')
 
     def to_dc(self) -> Account:
         return Account(id=self.id,
                        balance=self.balance,
                        owner=self.owner
                        )
+
+    def to_dc_transaction(self) -> AccountWithTransaction:
+        return AccountWithTransaction(id=self.id,
+                                      balance=self.balance,
+                                      owner=self.owner,
+                                      transaction=self.transaction
+                                      )
 
 
 class TransactionModel(db):

@@ -6,7 +6,7 @@ from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 
 from store.user.models import UserModel, GoodModel, AccountModel, TransactionModel
-from web.schemas import User, Good, Account, TransactionSchema, UserWithAccount
+from web.schemas import User, Good, Account, TransactionSchema, UserWithAccount, AccountWithTransaction
 
 
 async def create_admin_user(username: str, password: str, app) -> User:
@@ -50,17 +50,15 @@ async def goods_list(app) -> List[Good] | None:
         print("Error creating pull good list")
 
 
-async def account_list(app) -> List[Account] | None:
+async def account_list(app, username) -> List[Account] | None:
     try:
-        query = select(AccountModel, TransactionModel) \
-            .join_from(AccountModel, TransactionModel, AccountModel.id == TransactionModel.destination_account)
+
+        query = select(AccountModel).where(AccountModel.owner == username.id)
         res = (await app.ctx.db.create_async_pull_query(query)).scalars().all()
 
         if not res:
             return None
-        pprint(res[0])
-        [pprint(i.__dict__) for i in res]
-        return [i.to_dc() for i in res]
+        return [AccountWithTransaction(**i.__dict__) for i in res]
 
     except Exception as e:
         print(e)

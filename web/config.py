@@ -29,3 +29,4 @@ def setup_config(app: "Sanic", config_path: str):
     app.config.db_config = DatabaseConfig(**raw_config["database"])
     app.config.default_admin = DefaultAdminConfig(**raw_config["default_admin"])
     app.config.private_key = raw_config["private_key"]
+    app.config.secret = raw_config["secret"]

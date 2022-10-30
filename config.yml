@@ -1,5 +1,6 @@
 private_key: CaY5iCkYtN7DqXdiYK1BvmGrQuaSA4Tl4bEk9my0jc0=
 
+secret: U6rct6fv89jkjb8hHJJ95bKOjfodfu8KMBYf059ng909nIhnJNd
 
 default_admin:
   name: default_admin
@@ -8,8 +9,8 @@ default_admin:
 app_name: MyTestApp
 
 database:
-  host: localhost
-  port: 5433
-  user: feraclin
-  password: 12wm16ln
+  host: db
+  port: 5432
+  user: postgres
+  password: postgres
   database: sanic_test

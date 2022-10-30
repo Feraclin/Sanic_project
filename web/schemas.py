@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 
 class User(BaseModel):
+    id: int
     username: str
     password: str
     is_admin: bool
@@ -41,14 +42,6 @@ class Account(BaseModel):
         orm_mode = True
 
 
-class AccountWithTransaction(Account):
-    transaction: Optional[List['Transaction']] = None
-
-
-class AccountList(BaseModel):
-    accountlist: List[Account]
-
-
 class Transaction(BaseModel):
     id: int | None
     amount: int
@@ -60,7 +53,6 @@ class Transaction(BaseModel):
 
 class BuySchema(BaseModel):
     goodname: str
-    username: str
 
 
 class TransactionSchema(BaseModel):
@@ -95,3 +87,11 @@ class ChangeUser(BaseModel):
 class NewUser(BaseModel):
     username: str
     password: str
+
+
+class AccountWithTransaction(Account):
+    transaction: List[Transaction] | None = None
+
+
+class AccountList(BaseModel):
+    accountlist: List[AccountWithTransaction]

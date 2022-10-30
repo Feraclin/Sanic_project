@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - api
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 6080:8080
+    networks:
+      - api
+
+  api:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+      - rabbitmq
+      - adminer
+    networks:
+      - api
+
+volumes:
+  pgdata:
+
+networks:
+  api:
+    driver: bridge
